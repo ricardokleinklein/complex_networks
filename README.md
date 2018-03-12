@@ -4,7 +4,7 @@ This is a repository with different assignments and problems that deal with comp
 
 ## Requirements
 - numpy >= 1.14
-- matplotlib
+- matplotlib >= 2.2.0
 - networkx >= 2.1
 
 ## Data
@@ -14,10 +14,17 @@ In `~data/A1-networks.zip` there are several complex networks in *Pajek* (*.net*
 2. `model` - Generated from network model's samples.
 3. `real` - Actual networks.
 
-You can import any graph in those directories by calling:
+You can import any graph available in those directories by calling:
 ```
 import networkx as nx
 G = nx.read_pajek('path_to_the_graph/graph.net')
+```
+
+Print any of them to have a preliminar view:
+```
+import matplotlib.pyplot as plt
+nx.draw(G, with_labels=True, font_weights='bold')
+plt.show()
 ```
 
 ## Section 1
