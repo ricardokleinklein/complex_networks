@@ -6,6 +6,8 @@ This is a repository with different assignments and problems that deal with comp
 - numpy >= 1.14
 - matplotlib >= 2.2.0
 - networkx >= 2.1
+- docopt >= 0.6.0
+- tqdm >= 4.19.0
 
 ## Data
 
