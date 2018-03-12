@@ -7,14 +7,22 @@ This is a repository with different assignments and problems that deal with comp
 - matplotlib
 - networkx >= 2.1
 
-## Section 1
+## Data
 
-**Goal:** Structural descriptors in complex networks.
-
-In `data/A1-networks.zip` there are several complex networks in *Pajek* (*.net*) format, splitted in three categories:
+In `~data/A1-networks.zip` there are several complex networks in *Pajek* (*.net*) format, splitted in three categories:
 1. `toy`- Example nets.
 2. `model` - Generated from network model's samples.
 3. `real` - Actual networks.
+
+You can import any graph in those directories by calling:
+```
+import networkx as nx
+G = nx.read_pajek('path_to_the_graph/graph.net')
+```
+
+## Section 1
+
+**Goal:** Structural descriptors in complex networks.
 
 The descriptors that are to compute are:
 - Number of vertices
