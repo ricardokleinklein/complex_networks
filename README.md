@@ -3,6 +3,7 @@
 This is a repository with different assignments and problems that deal with complex networks and graphs' properties. Most of the problems, as well as the notation and references are extracted and/or derived from [M.E.J. Newman's *Networks: An Introduction*](https://global.oup.com/academic/product/networks-9780199206650?cc=jp&lang=en&).
 
 ## Requirements
+- python >= 2.7
 - numpy >= 1.14
 - matplotlib >= 2.2.0
 - networkx >= 2.1
@@ -43,4 +44,12 @@ The descriptors that are to compute are:
 - Diameter (greatest length between two vertices in a network)
 
 Furthermore, plot the figures representing the probability distribution function (*pdf*) and complementary cumulative distribution function (*ccdf*) for some networks.
+
+To run the experiments proposed in this section:
+```
+python section1/main.py <in_dir> <dst_dir>
+```
+The graphs must be present in `<in_dir>/subfolders`, as it'll be generated when extracting the files included in this repository. When the processing is done, the results can be found as a table in `<dst_dir>/file.ext`, where recommended extensions `ext` are `txt` or `csv`.
+
+
 
