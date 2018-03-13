@@ -47,9 +47,9 @@ Furthermore, plot the figures representing the probability distribution function
 
 To run the experiments proposed in this section:
 ```
-python section1/main.py <in_dir> <dst_dir>
+python section1/main.py data/A1-networks/ /exp/section_1/table.txt
 ```
-The graphs must be present in `<in_dir>/subfolders`, as it'll be generated when extracting the files included in this repository. When the processing is done, the results can be found as a table in `<dst_dir>/file.ext`, where recommended extensions `ext` are `txt` or `csv`.
+The graphs must be present in `data/A1-networks`, as it'll be generated when extracting the files included in this repository. When the processing is done, the results can be found as a table in `/exp/section_1/table.txt`. You can freely change where the folder containing the graphs `<in_dir>` and the directory in which save the results`<dst_dir>` point to.
 
 
 
