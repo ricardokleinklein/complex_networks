@@ -14,8 +14,6 @@ from __future__ import print_function
 
 import os
 import numpy as np
-# import matplotlib.pyplot as plt
-import networkx as nx
 from docopt import docopt
 from tqdm import tqdm
 
@@ -27,8 +25,17 @@ if __name__ == '__main__':
 	dst_dir = args["<dst_dir>"]
 
 	graphs = compile_graph_libs(in_dir)
+	table = list()
 
 	for key in graphs.keys():
-		for G_name in graphs[key]:
+		for G_name in tqdm(graphs[key]):
 			G = load_graph(os.path.join(in_dir, key, G_name))
-			print(key, G_name, get_num_vertices(G), get_num_edges(G))
+			table.append((key,
+									G_name, 
+									get_num_vertices(G),
+									get_num_edges(G),
+									get_degree_info(G), 
+									get_ACC(G),
+									get_assortativity(G)))
+	
+	write_file(table, dst_dir)
