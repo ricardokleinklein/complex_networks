@@ -51,5 +51,31 @@ python section1/main.py data/A1-networks/ /exp/section_1/table.txt
 ```
 The graphs must be present in `data/A1-networks`, as it'll be generated when extracting the files included in this repository. When the processing is done, the results can be found as a table in `/exp/section_1/table.txt`. You can freely change where the folder containing the graphs `<in_dir>` and the directory in which save the results`<dst_dir>` point to.
 
+***
+
+# License
+
+The complex_networks is licensed under the MIT "Expat" License:
+
+> Copyright (c) 2018: Ricardo Faundez-Carrasco.
+>
+> Permission is hereby granted, free of charge, to any person obtaining
+> a copy of this software and associated documentation files (the
+> "Software"), to deal in the Software without restriction, including
+> without limitation the rights to use, copy, modify, merge, publish,
+> distribute, sublicense, and/or sell copies of the Software, and to
+> permit persons to whom the Software is furnished to do so, subject to
+> the following conditions:
+>
+> The above copyright notice and this permission notice shall be
+> included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+> IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+> CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+> TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+> SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
