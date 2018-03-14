@@ -8,6 +8,8 @@ import networkx as nx
 
 from networkx.algorithms.approximation.clustering_coefficient import average_clustering
 from networkx.algorithms.assortativity import degree_assortativity_coefficient
+from networkx.algorithms.distance_measures import diameter
+from networkx.algorithms.shortest_paths.generic import average_shortest_path_length
 
 def _rm_hidden(files):
 	return [file for file in files if not file.startswith(".")]
@@ -65,6 +67,15 @@ def get_assortativity(G):
 	return degree_assortativity_coefficient(G)
 
 
+def get_APL(G):
+	"""Average Path Length."""
+	return average_shortest_path_length(G)
+
+
+def get_diameter(G):
+	return diameter(G)
+
+
 def draw_graph(G, name):
 	nx.draw_networkx(G, with_labels=True, font_weight='bold',
 		label=name)
@@ -73,7 +84,8 @@ def draw_graph(G, name):
 def write_file(table, dst_dir):
 	with open(dst_dir, 'w') as f:
 		f.write('dir\t' + 'graph\t' + 'order\t' + 'size\t' + 'degrees\t' +
-			'ACC\t' + 'assortativity\t' + '\n')
+			'ACC\t' + 'assortativity\t' + 'avg_path_length' + 
+			'diameter' + '\n')
 		for line in table:
 			parts = [str(obj) for obj in line]
 			line = "\t".join(parts)
