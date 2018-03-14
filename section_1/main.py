@@ -19,6 +19,7 @@ from tqdm import tqdm
 
 from utils import *
 
+
 if __name__ == '__main__':
 	args = docopt(__doc__)
 	in_dir = args["<in_dir>"]
@@ -31,11 +32,13 @@ if __name__ == '__main__':
 		for G_name in tqdm(graphs[key]):
 			G = load_graph(os.path.join(in_dir, key, G_name))
 			table.append((key,
-									G_name, 
-									get_num_vertices(G),
-									get_num_edges(G),
-									get_degree_info(G), 
-									get_ACC(G),
-									get_assortativity(G)))
+				G_name, 
+				get_num_vertices(G),
+				get_num_edges(G),
+				get_degree_info(G), 
+				get_ACC(G),
+				get_assortativity(G),
+				get_APL(G),
+				get_diameter(G)))
 	
 	write_file(table, dst_dir)
