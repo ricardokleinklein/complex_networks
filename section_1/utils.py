@@ -4,6 +4,8 @@ from __future__ import print_function
 
 import os
 import numpy as np
+import collections
+import matplotlib.pyplot as plt
 import networkx as nx
 from tqdm import tqdm
 
@@ -11,6 +13,7 @@ from networkx.algorithms.approximation.clustering_coefficient import average_clu
 from networkx.algorithms.assortativity import degree_assortativity_coefficient
 from networkx.algorithms.distance_measures import diameter
 from networkx.algorithms.shortest_paths.generic import average_shortest_path_length
+
 
 def _rm_hidden(files):
 	return [file for file in files if not file.startswith(".")]
@@ -48,7 +51,7 @@ def _get_max_degree(G):
 
 
 def _get_mean_degree(G):
-	return get_num_edges(G) / get_num_vertices(G)
+	return _get_num_edges(G) / _get_num_vertices(G)
 
 
 def _get_degree_info(G):
@@ -80,9 +83,10 @@ def _get_diameter(G):
 def draw_graph(G, name=None):
 	nx.draw_networkx(G, with_labels=True, font_weight='bold',
 		label=name)
+	plt.show()
 
 
-def _write_file(table, dst_dir):
+def write_file(table, dst_dir):
 	with open(dst_dir, 'w') as f:
 		f.write('dir\t' + 'graph\t' + 'order\t' + 'size\t' + 'degrees\t' +
 			'ACC\t' + 'assortativity\t' + 'avg_path_length\t' + 
@@ -93,7 +97,7 @@ def _write_file(table, dst_dir):
 			f.write(line + "\n")
 
 
-def get_table(graphs):
+def get_table(in_dir, graphs):
 	table = list()
 	for key in graphs.keys():
 		for G_name in tqdm(graphs[key]):
@@ -107,8 +111,7 @@ def get_table(graphs):
 					_get_assortativity(G),
 					_get_APL(G),
 					_get_diameter(G)))
-
-	_write_file(table, dst_dir)
+	return table
 
 
 def compile_selected_graphs(in_dir, names):
@@ -124,7 +127,27 @@ def get_pdfs(graphs):
 	pdfs = dict()
 	for key in graphs.keys():
 		G = load_graph(graphs[key])
-		pdf = nx.degree_histogram(G)
-		pdfs[key] = pdf
+		pdf = [v for _, v in nx.degree(G)]
+		pdfs[key] = np.sort(pdf)
 	return pdfs
+
+
+def plot_simple_pdf(pdfs):
+	for key in pdfs.keys():
+		plt.hist(pdfs[key], normed=True)
+		plt.title(key)
+		plt.xlabel('Degree k')
+		plt.ylabel('Fraction p_k of vertices with degree k')
+		plt.show()
+
+def plot_loglog_pdf(pdfs):
+	for key in pdfs.keys():
+		mn = np.min(pdfs[key])
+		mx = np.max(pdfs[key])
+		d = [np.log(p) for p in pdfs[key]]
+		plt.hist(d, normed=True)
+		plt.show()
+
+		
+
 			
