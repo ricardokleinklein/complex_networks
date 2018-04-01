@@ -24,9 +24,9 @@ if __name__ == '__main__':
 	in_dir = args["<in_dir>"]
 	dst_dir = args["<dst_dir>"]
 
-	# graphs = compile_graph_libs(in_dir)
-	# table = get_table(in_dir, graphs)
-	# write_file(table, dst_dir)
+	graphs = compile_graph_libs(in_dir)
+	table = get_table(in_dir, graphs)
+	write_file(table, dst_dir)
 
 	names = ['model/ER1000k8.net',
 		'model/SF_1000_g2.7.net',
@@ -36,6 +36,7 @@ if __name__ == '__main__':
 	graphs = compile_selected_graphs(in_dir, names)
 
 	PDF = get_pdfs(graphs)
+	plot_simple_pdf(PDF)
 	plot_loglog_pdf(PDF)
 
 

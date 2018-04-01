@@ -133,21 +133,36 @@ def get_pdfs(graphs):
 
 
 def plot_simple_pdf(pdfs):
-	for key in pdfs.keys():
-		plt.hist(pdfs[key], normed=True)
-		plt.title(key)
+	for G in pdfs.keys():
+		plt.hist(pdfs[G], normed=True)
+		plt.title(G)
 		plt.xlabel('Degree k')
 		plt.ylabel('Fraction p_k of vertices with degree k')
 		plt.show()
 
+
 def plot_loglog_pdf(pdfs):
-	for key in pdfs.keys():
-		mn = np.min(pdfs[key])
-		mx = np.max(pdfs[key])
-		d = [np.log(p) for p in pdfs[key]]
-		plt.hist(d, normed=True)
+	for G in pdfs.keys():
+		k_min = np.min(pdfs[G])
+		k_max = np.max(pdfs[G])
+		p_max = np.log(k_max + 1)
+		p = np.log(pdfs[G])
+		n_bins = 10
+		bins = np.linspace(p[0], p_max, n_bins)
+		for i in range(len(bins)):
+			for j in range(len(p)):
+				if p[j] > bins[i] and p[j] < bins[i+1]:
+					p[j] = bins[i]
+				if p[j] > bins[-1]:
+					p[j] = bins[-1]
+		plt.hist(p, normed=True, log=True)
+		plt.title(G)
+		plt.xlabel('Degree k')
+		plt.ylabel('Fraction p_k of vertices with degree k')
 		plt.show()
 
+		
+		
 		
 
 			
