@@ -51,7 +51,7 @@ def _get_max_degree(G):
 
 
 def _get_mean_degree(G):
-	return _get_num_edges(G) / _get_num_vertices(G)
+	return 2 * _get_num_edges(G) / _get_num_vertices(G)
 
 
 def _get_degree_info(G):
