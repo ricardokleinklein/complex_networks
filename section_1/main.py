@@ -38,5 +38,6 @@ if __name__ == '__main__':
 	PDF = get_pdfs(graphs)
 	plot_simple_pdf(PDF)
 	plot_loglog_pdf(PDF)
+	plot_loglog_pdf(PDF, is_ccdf=True)
 
 

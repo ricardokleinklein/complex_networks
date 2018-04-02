@@ -134,32 +134,48 @@ def get_pdfs(graphs):
 
 def plot_simple_pdf(pdfs):
 	for G in pdfs.keys():
-		plt.hist(pdfs[G], normed=True)
+		plt.hist(pdfs[G], normed=True, bins=11)
 		plt.title(G)
 		plt.xlabel('Degree k')
 		plt.ylabel('Fraction p_k of vertices with degree k')
 		plt.show()
 
 
-def plot_loglog_pdf(pdfs):
+def plot_loglog_pdf(pdfs, is_ccdf=False):
 	for G in pdfs.keys():
 		k_min = np.min(pdfs[G])
 		k_max = np.max(pdfs[G])
 		p_max = np.log(k_max + 1)
 		p = np.log(pdfs[G])
-		n_bins = 10
+		n_bins = 25
 		bins = np.linspace(p[0], p_max, n_bins)
-		for i in range(len(bins)):
-			for j in range(len(p)):
-				if p[j] > bins[i] and p[j] < bins[i+1]:
-					p[j] = bins[i]
-				if p[j] > bins[-1]:
-					p[j] = bins[-1]
-		plt.hist(p, normed=True, log=True)
-		plt.title(G)
-		plt.xlabel('Degree k')
-		plt.ylabel('Fraction p_k of vertices with degree k')
-		plt.show()
+		if not is_ccdf:
+			for i in range(len(bins)):
+				for j in range(len(p)):
+					if p[j] > bins[i] and p[j] < bins[i+1]:
+						p[j] = bins[i]
+					if p[j] > bins[-1]:
+						p[j] = bins[-1]
+			plt.hist(p, normed=True, log=True)
+			plt.title(G)
+			plt.xlabel('Degree k')
+			plt.xticks(bins, ["%.1f" % i for i in bins])
+			plt.ylabel('Fraction p_k of vertices with degree k')
+			plt.show()
+		else:
+			import collections
+			c = collections.Counter(pdfs[G]).most_common()
+			c.sort()
+			c = np.array(c)[::-1]
+			new_c = list()
+			for i in range(len(c)):
+				new_c.append((c[i,0], np.sum(c[:i+1, 1])))
+			new_c = np.array(new_c)[::-1]
+			plt.plot(new_c[:,0], new_c[:,1]/np.max(new_c[:,1]))
+			plt.title(G)
+			plt.xlabel('Degree k')
+			plt.ylabel('Fraction p_k of vertices with degree k or higher')
+			plt.show()
 
 		
 		
