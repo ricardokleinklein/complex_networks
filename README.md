@@ -51,6 +51,28 @@ python section1/main.py data/A1-networks/ /exp/section_1/table.txt
 ```
 The graphs must be present in `data/A1-networks`, as it'll be generated when extracting the files included in this repository. When the processing is done, the results can be found as a table in `/exp/section_1/table.txt`. You can freely change where the folder containing the graphs `<in_dir>` and the directory in which save the results`<dst_dir>` point to.
 
+## Section 2
+
+**Goal:** Generation of some models of complex networks.
+
+The networks to generate are the following:
+- Erdös-Rényi (ER), either based on distribution G(N,K) or G(N,p).
+- Watts-Strogatz (WS) model.
+- Barabási & Albert (BA) model.
+- Configuration Model.
+
+For each of the models above, run a series of experiments to study the outcome when changing the hyper parameters of the net, such as its order, size or the probability function that determines the final configuration of the net's edges.
+
+For every case, compare the degree distribution (*pdf*) of the generated network with the theoretical distribution.
+
+To run the experiments proposed in this section:
+```
+python section2/main.py /exp/section_2
+```
+
+No input data is required, for this task is to generate the graphs. However, the different results, as well as the plots comparing the experimental and the theoretical *pdf*, are saved in `/exp/section_2`.
+
+
 ***
 
 # License
