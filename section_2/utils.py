@@ -31,7 +31,7 @@ def _new_ER(G, N, p):
 	return G
 
 
-def new_ER(N, K, p=None):
+def new_ER(N, K=None, p=None):
 	"""Erdos-Renyi network."""
 	G = _new_empty_G(N)
 	if p is None and K is not None:
@@ -48,6 +48,43 @@ def new_ER(N, K, p=None):
 	return G
 
 
+def new_WS(N, K, p):
+	"""Watts-Strogatz network."""
+	raise NotImplementedError
+
+
+def _make_clique_G(G):
+	non_edges = nx.non_edges(G)
+	for e in non_edges:
+		G.add_edge(e[0], e[1])
+	return G
+
+
+def _add_BA_node(G, m):
+	pdf = get_pdf(G)
+	new_node = len(pdf)
+	G.add_node(new_node)
+	K = 2 * nx.number_of_edges(G)
+	probs_per_node = [np.sum(pdf[:i+1]) for i in range(len(pdf))]
+	unvalid = list()
+	while len(unvalid) < m:
+		prob = np.random.random() * K
+		idx = min([probs_per_node.index(s) for s in probs_per_node if s > prob])
+		if idx not in unvalid:
+			unvalid.append(idx)
+		G.add_edge(new_node, idx)
+
+
+def new_BA(N, m):
+	"""Barabasi and Albert network."""
+	N_init = 15
+	G = _new_empty_G(N_init)
+	G = _make_clique_G(G)
+	while nx.number_of_nodes(G) < N:
+		_add_BA_node(G, m)
+	return G
+
+
 def normal_pdf(mu, var):
 	sigma = np.sqrt(var)
 	x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
@@ -55,15 +92,16 @@ def normal_pdf(mu, var):
 
 
 def get_pdf(G):
+	return [v for _, v in nx.degree(G)]
+
+
+def plt_pdf(G):
 	pdf = [v for _, v in nx.degree(G)]
 	pdf = np.sort(pdf)
-	plt.hist(pdf, normed=True, bins=20)
+	plt.hist(pdf, normed=True, bins=50)
 	plt.title(G)
 	plt.xlabel('Degree k')
 	plt.ylabel('Fraction p_k of vertices with degree k')
-
-
-def plot():
 	plt.show()
 
 
