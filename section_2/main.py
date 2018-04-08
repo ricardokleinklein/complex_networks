@@ -6,7 +6,6 @@ Usage:
 	main.py [options] <dst_dir>
 
 options:
-	--nodes				Number of nodes
 	-h, --help 		Display help message
 """
 
@@ -22,9 +21,14 @@ if __name__ == '__main__':
 	args = docopt(__doc__)
 	dst_dir = args["<dst_dir>"]
 
-	N = 1500
-	K, p = N * (N-1) / 2, 0.01
+	N = 150
+	k, K, p = 2, int(N * (N-1) / 2), 0.2
 	m = 10
 
 	ER = new_ER(N, p=p)
+	WS = new_WS(N, k, p)
 	BA = new_BA(N, m)
+
+	draw(ER)
+	draw(WS)
+	draw(BA)

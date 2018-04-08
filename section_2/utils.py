@@ -48,9 +48,43 @@ def new_ER(N, K=None, p=None):
 	return G
 
 
+def _make_ring_lattice(G, K):
+	d = nx.number_of_nodes(G) - 1 - K/2
+	nodes = nx.nodes(G)
+	for i in nodes:
+		for j in nodes:
+			op = abs(i - j) % d
+			if op > 0 and op <= K/2:
+				G.add_edge(i,j)
+	return G
+
+
+def _update_G(G, change):
+	G.remove_edge(change[0], change[1])
+	G.add_edge(change[0], change[2])
+	return G
+
+
 def new_WS(N, K, p):
 	"""Watts-Strogatz network."""
-	raise NotImplementedError
+	# It must satisfy that N >> K >> log(N) >> 1
+	G = _new_empty_G(N)
+	G = _make_ring_lattice(G, K)
+	nodes = nx.nodes(G)
+	for i in nodes:
+		neighbors = nx.all_neighbors(G, i)
+		forbidden = list()
+		forbidden.append(i)
+		[forbidden.append(j) for j in neighbors]
+		for j in nx.all_neighbors(G,i):
+			if i < j:
+				prob = np.random.random()
+				if prob > 1 - p:
+					new_j = np.random.randint(0, N)
+					while new_j in forbidden:
+						new_j = np.random.randint(0, N)
+					G = _update_G(G, (i, j, new_j))
+	return G
 
 
 def _make_clique_G(G):
