@@ -115,16 +115,6 @@ def new_BA(N, m):
 	return G
 
 
-def _generate_pdf(N, k_min, gamma, is_powerLaw=True):
-	if is_powerLaw:
-		pdf = np.floor((N - 1) * np.random.power(gamma + 1, size=N))
-	else:
-		pdf = np.floor((N -1) * np.random.poisson(gamma, size=N))
-	_increase_kmin(pdf, k_min)
-	pdf[-1] = pdf[-1] + 1 if np.sum(pdf) % 2 != 0 else pdf[-1]
-	return pdf
-
-
 def _increase_kmin(pdf, k_min):
 	k = np.min(pdf)
 	while k < k_min:
@@ -132,11 +122,43 @@ def _increase_kmin(pdf, k_min):
 		k = np.min(pdf)
 
 
-def new_CM(N, k_min=1, gamma= 2, is_powerLaw=True):
+def _generate_pdf(N, k_min, gamma, is_powerLaw=True):
+	if is_powerLaw:
+		k_max = np.floor(np.sqrt(N))
+		pdf = np.floor(k_max * np.random.power(gamma + 1, size=N))
+	else:
+		pdf = np.floor(np.random.poisson(gamma - 1, size=N))
+	_increase_kmin(pdf, k_min)
+	pdf[-1] = pdf[-1] + 1 if np.sum(pdf) % 2 != 0 else pdf[-1]
+	return pdf.astype(int)
+
+
+def _to_stub_vector(pdf):
+	from itertools import chain
+	chaini = chain.from_iterable
+	return list(chaini([n] * d for n, d in enumerate(pdf)))
+
+
+def _rm_isolated_nodes(G):
+	node_rm = [node for node in nx.nodes(G) if not nx.edges(G, node)]
+	G.remove_nodes_from(node_rm)
+
+
+def new_CM(N, k_min=1, gamma=2, is_powerLaw=True):
 	G = _new_empty_G(N)
-	max_n_edges = N - 1
 	pdf = _generate_pdf(N, k_min, gamma, is_powerLaw=is_powerLaw)
-	
+	stub = _to_stub_vector(pdf)
+	np.random.shuffle(stub)
+	n = len(stub) // 2
+	for i in range(n):
+		stub_a = stub[2*i]
+		stub_b = stub[2*i+1]
+		is_diff = stub_a != stub_b
+		is_connected = stub_b in nx.all_neighbors(G, stub_a)
+		if is_diff and not is_connected:
+			G.add_edge(stub_a, stub_b)
+	_rm_isolated_nodes(G)
+	return G
 
 
 def normal_pdf(mu, var):
