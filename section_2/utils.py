@@ -115,37 +115,28 @@ def new_BA(N, m):
 	return G
 
 
-def _generate_random_pdf(N):
-	pdf = np.random.randint(1, N - 1, size= N)
-	while np.sum(pdf) % 2 != 0:
-		pdf = np.random.randint(1, N - 1, size=N)
+def _generate_pdf(N, k_min, gamma, is_powerLaw=True):
+	if is_powerLaw:
+		pdf = np.floor((N - 1) * np.random.power(gamma + 1, size=N))
+	else:
+		pdf = np.floor((N -1) * np.random.poisson(gamma, size=N))
+	_increase_kmin(pdf, k_min)
+	pdf[-1] = pdf[-1] + 1 if np.sum(pdf) % 2 != 0 else pdf[-1]
 	return pdf
 
 
-def new_CM(N, pdf=None):
+def _increase_kmin(pdf, k_min):
+	k = np.min(pdf)
+	while k < k_min:
+		pdf += 1
+		k = np.min(pdf)
+
+
+def new_CM(N, k_min=1, gamma= 2, is_powerLaw=True):
 	G = _new_empty_G(N)
 	max_n_edges = N - 1
-	if pdf is None:
-		pdf = _generate_random_pdf(N)
-	K = np.sum(pdf)
-	stubs_node = [np.sum(pdf[:i+1]) for i in range(len(pdf))]
-	print(K, pdf, stubs_node)
-	forbidden = list()
-	while len(forbidden) != K:
-		stub_i = np.random.randint(0, K)
-		while stub_i in forbidden:
-			stub_i = np.random.randint(0, K)
-		i = min([stubs_node.index(s) for s in stubs_node if s > stub_i])
-		forbidden.append(stub_i)
-
-		stub_j = np.random.randint(0, K)
-		while stub_j in forbidden:
-			stub_j = np.random.randint(0, K)
-		j = min([stubs_node.index(s) for s in stubs_node if s > stub_j])
-		forbidden.append(stub_j)
-		G.add_edge(i, j)
-
-	return G
+	pdf = _generate_pdf(N, k_min, gamma, is_powerLaw=is_powerLaw)
+	
 
 
 def normal_pdf(mu, var):
