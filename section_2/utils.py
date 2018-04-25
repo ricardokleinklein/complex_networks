@@ -125,7 +125,7 @@ def _increase_kmin(pdf, k_min):
 def _generate_pdf(N, k_min, gamma, is_powerLaw=True):
 	if is_powerLaw:
 		k_max = np.floor(np.sqrt(N))
-		pdf = np.floor(k_max * np.random.power(gamma + 1, size=N))
+		pdf = np.ceil(k_max * np.random.power(gamma + 1, size=N))
 	else:
 		pdf = np.floor(np.random.poisson(gamma - 1, size=N))
 	_increase_kmin(pdf, k_min)
@@ -145,6 +145,7 @@ def _rm_isolated_nodes(G):
 
 
 def new_CM(N, k_min=1, gamma=2, is_powerLaw=True):
+	"""Configuration Model."""
 	G = _new_empty_G(N)
 	pdf = _generate_pdf(N, k_min, gamma, is_powerLaw=is_powerLaw)
 	stub = _to_stub_vector(pdf)
@@ -161,12 +162,6 @@ def new_CM(N, k_min=1, gamma=2, is_powerLaw=True):
 	return G
 
 
-def normal_pdf(mu, var):
-	sigma = np.sqrt(var)
-	x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
-	plt.plot(x,mlab.normpdf(x, mu, sigma))
-
-
 def get_pdf(G):
 	return [v for _, v in nx.degree(G)]
 
@@ -174,14 +169,25 @@ def get_pdf(G):
 def plt_pdf(G):
 	pdf = [v for _, v in nx.degree(G)]
 	pdf = np.sort(pdf)
-	plt.hist(pdf, normed=True, bins=50)
-	plt.title(G)
+	plt.hist(pdf, normed=True, bins=10)
 	plt.xlabel('Degree k')
-	plt.ylabel('Fraction p_k of vertices with degree k')
+	plt.ylabel('Fraction of p_k of vertices with degree k')
 	plt.show()
 
+	
+def estimate_gamma(pdf):
+	sum_term = 0
+	n = len(pdf)
+	k_min = np.min(pdf)
+	for i in range(len(pdf)):
+		sum_term += np.log(pdf[i] / (k_min - 0.5))
+	sum_term = 1 / sum_term
+	return 1 + n * sum_term
 
-def draw(G):
+
+def draw(G, name, dst_dir):
 	print(nx.info(G))
 	nx.draw_networkx(G, node_color='c', alpha=0.85)
-	plt.show()
+	plt.title(name.replace(".png",""))
+	plt.axis('off')
+	plt.savefig(os.path.join(dst_dir,name))
