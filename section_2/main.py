@@ -21,12 +21,12 @@ if __name__ == '__main__':
 	args = docopt(__doc__)
 	dst_dir = args["<dst_dir>"]
 
-	N = 5
+	N = 50
 	k, K, p = 8, int(N * (N-1) / 2), 0.2
 	m = 1
 
-	# ER = new_ER(N, p=p)
+	ER = new_ER(N, p=p)
 	# WS = new_WS(N, k, p)
 	# BA = new_BA(N, m)
-	CM = new_CM(N)	
-	draw(CM)
+	# CM = new_CM(N)	
+	draw(ER)

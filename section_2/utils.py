@@ -116,9 +116,9 @@ def new_BA(N, m):
 
 
 def _generate_random_pdf(N):
-	pdf = np.random.randint(0, N - 1, size= N)
+	pdf = np.random.randint(1, N - 1, size= N)
 	while np.sum(pdf) % 2 != 0:
-		pdf = np.random.randint(0, N - 1, size=N)
+		pdf = np.random.randint(1, N - 1, size=N)
 	return pdf
 
 
