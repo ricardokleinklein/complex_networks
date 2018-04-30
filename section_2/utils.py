@@ -60,6 +60,7 @@ def _make_ring_lattice(G, K):
 def _update_G(G, change):
 	G.remove_edge(change[0], change[1])
 	G.add_edge(change[0], change[2])
+	return G
 
 
 def new_WS(N, K, p):
@@ -80,7 +81,7 @@ def new_WS(N, K, p):
 					new_j = np.random.randint(0, N)
 					while new_j in forbidden:
 						new_j = np.random.randint(0, N)
-					_update_G(G, (i, j, new_j))
+					G = _update_G(G, (i, j, new_j))
 	return G
 
 
@@ -122,7 +123,7 @@ def _increase_kmin(pdf, k_min):
 		k = np.min(pdf)
 
 
-def _generate_pdf(N, k_min, gamma, is_powerLaw=True):
+def _generate_pdf(N, k_min, gamma, is_powerLaw):
 	if is_powerLaw:
 		k_max = np.floor(np.sqrt(N))
 		pdf = np.ceil(k_max * np.random.power(gamma + 1, size=N))
