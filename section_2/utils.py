@@ -82,6 +82,7 @@ def new_WS(N, K, p):
 					while new_j in forbidden:
 						new_j = np.random.randint(0, N)
 					G = _update_G(G, (i, j, new_j))
+					break
 	return G
 
 
@@ -167,13 +168,14 @@ def get_pdf(G):
 	return [v for _, v in nx.degree(G)]
 
 
-def plt_pdf(G):
+def plt_pdf(G, name, dst_dir):
 	pdf = [v for _, v in nx.degree(G)]
 	pdf = np.sort(pdf)
-	plt.hist(pdf, normed=True, bins=10)
+	plt.hist(pdf, normed=True, bins=35)
+	plt.title(name)
 	plt.xlabel('Degree k')
 	plt.ylabel('Fraction of p_k of vertices with degree k')
-	plt.show()
+	plt.savefig(os.path.join(dst_dir, name))
 
 	
 def estimate_gamma(pdf):
