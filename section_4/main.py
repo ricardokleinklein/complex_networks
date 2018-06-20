@@ -26,19 +26,22 @@ if __name__ == '__main__':
 	beta = np.linspace(1e-4, 1, 51)
 	p0 = 0.2
 	Nrep = 20
-	Tmax = 500
+	Tmax = 1000
 	Ttrans = int(0.9 * Tmax)
 	p = 0.05
 	m = 6
 
-	Graphs = [PathGraph(N),
-		StarGraph(N),
-		WheelGraph(N),
-		ErdosRenyiGraph(N, p),
+	Graphs = [
+		# PathGraph(N),
+		# StarGraph(N),
+		# WheelGraph(N),
+		# HypercubeGraph(N),
+		# ErdosRenyiGraph(N, p),
 		PowerLawGraph(N, m, p),
-		BarabasiAlbertGraph(N, m),
-		DirectedScaleFreeGraph(N),
-		KarateGraph()]
+		# BarabasiAlbertGraph(N, m),
+		# DirectedScaleFreeGraph(N),
+		# KarateGraph()
+		]
 
 	for G in Graphs:
 		G.draw(dst_dir)

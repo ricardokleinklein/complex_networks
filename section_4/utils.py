@@ -37,7 +37,10 @@ class BaseGraph:
 		for key, value in vars().items():
 			if key != 'self':
 				if (key == 'mu' or key == 'beta') and np.isscalar(value):
-					self.params[key] = [value] * self.N
+					if key == 'mu':
+						np.random.poisson(lam=value, size=(self.N))
+					else:
+						self.params[key] = [value] * self.N
 				else:
 					self.params[key] = value
 
@@ -141,7 +144,7 @@ class ErdosRenyiGraph(BaseGraph):
 
 class PowerLawGraph(BaseGraph):
 	def __init__(self, N, m, p):
-		self.name = 'Default Scale-Free random graph SF_%i' % N
+		self.name = 'Default Power-Law random graph SF_%i (Poisson distribution)' % N
 		self.N = N
 		self.G = nx.powerlaw_cluster_graph(N, m, p)
 
