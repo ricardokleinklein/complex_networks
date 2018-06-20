@@ -16,31 +16,33 @@ from docopt import docopt
 
 from utils import *
 
-import community
-import networkx as nx
-
 
 if __name__ == "__main__":
 	args = docopt(__doc__)
 	in_dir = args["<in_dir>"]
 	dst_dir = args["<dst_dir>"]
 
-	graphs_dir = get_graphs(in_dir)
-	for section in graphs_dir:
-		graphs = [g for g in graphs_dir[section] if g.endswith('.net')]
-		for g in graphs:
-			# Load graph
-			g_nx, g_ig = load_graph(os.path.join(in_dir, section, g))
+	graphs_dir = get_paths(in_dir)
+	data = get_graph_and_reference(graphs_dir)
+	
+	for i in range(len(data)):
+		g_nx, g_ig, reference, name = data[i]
+		label = convert_nx_to_pred(label_propagation(g_nx), g_nx)
+		gir = girvan(g_nx)
+		if reference is not None:
+			pred = convert_nx_to_pred([i for i in gir][max(reference)-1], g_nx)
+		else:
+			pred = convert_nx_to_pred([i for i in gir][-1], g_nx)
+		level = convert_ig_to_pred(multilevel(g_ig), g_ig)
+		
+		print(name)
+		if reference is not None:
+			print(jaccard(reference, label),
+				jaccard(reference, pred),
+				jaccard(reference, level))
 
-			# Get partitions: Girvan-Newman algorithm
-			# nx_gn, ig_gn = girvan_newman(g_nx, g_ig)
-			# Get partitions: label propagation
-			# nx_lp, ig_lp = label_propagation(g_nx, g_ig)
-			# Get partitions: Louvain method
-			nx_lo, ig_lo = louvain(g_nx, g_ig)
-			
-			# Estimate modularity
-			# print(g, compute_modularity(g_nx, nx_lp, g_ig, ig_lp))
+			print(mutual_info(reference, label),
+				mutual_info(reference, pred),
+				mutual_info(reference, level))
 
-			g_ig, ig_lo = from_ig_to_nx(g_ig, ig_lo)
-			draw_nx_graph(g_nx, g_ig, nx_lo, ig_lo)
+		draw(g_nx, (label, pred, level, reference), dst_dir, name)
