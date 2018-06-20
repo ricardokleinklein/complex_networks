@@ -92,11 +92,11 @@ if __name__ == '__main__':
 	# [exp_WS(n, dst_dir) for n in N]
 
 	# Experiments on BA
-	N = [5000]
-	[exp_BA(n, dst_dir) for n in N]
+	# N = [5000]
+	# [exp_BA(n, dst_dir) for n in N]
 
 	# Experiments on CM
 	# N = [100, 1000, 10000]
-	N = [5000]
-	[exp_CM(n, dst_dir) for n in N]
+	# N = [5000]
+	# [exp_CM(n, dst_dir) for n in N]
 	
