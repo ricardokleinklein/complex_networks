@@ -7,6 +7,7 @@ This is a repository with different assignments and problems that deal with comp
 - numpy >= 1.14
 - matplotlib >= 2.2.0
 - networkx >= 2.1
+- igraph >= 0.6.0
 - docopt >= 0.6.0
 - tqdm >= 4.19.0
 
@@ -72,6 +73,39 @@ python section2/main.py /exp/section_2
 
 No input data is required, for this task is to generate the graphs. However, the different results, as well as the plots comparing the experimental and the theoretical *pdf*, are saved in `/exp/section_2`.
 
+## Section 3
+
+**Goal:** Community detection in complex networks.
+
+In this section we apply three different community detection algorithms to a series of complex networks available in `/data/A3-networks.zip`. The algorithms are implementations taken from the network-oriented libraries *iGraph* and *networkx*: 
+
+1. Label propagation (*networkx*) - Based on label propagation
+2. Girvan-Newman algorithm (*networkx*) - Based on the removal of edges with high betweenness centrality score
+3. Community-multilevel (*iGraph*) - Based on modularity score
+
+After communities have been found, a comparison with some reference partitions are performed tby means of the *Jaccard index* and the *mutual information* score. Last, communities (partitions) found are visually compared to the reference partitions.
+
+To execute this part,
+```
+python section3/main.py /data/A3-networks.zip /exp/section_3
+```
+
+Should do the job and afterwards results should be saved in `/exp/section_3`.
+
+## Section 4
+
+**Goal:** Epidemics and disease spread in complex networks - SIS model.
+
+Using a Montecarlo simulation, we have to study the dynamics of epidemics and disease transmission in complex networks when considering a SIS (Susceptible - Infected -Susceptible) model. In this scenario, nodes in the network are all originally healthy, but depending on whether any given node's neighbors are infected or not at some point, the node can fall sick as well and get infected, being able to spread the disease to other neighbors until it recovers (in case it do).
+
+The magnitudes of interest are the variation induced in the dynamics by slight changes in size of the network, its topology, the infection probability and the recovery index.
+
+To run this section's experiments, type in in the command line:
+```
+python section4/main.py /exp/section_4
+```
+
+No input data is required, generating the required graphs within the script. Results and plots should be available in `/exp/section_4`.
 
 ***
 
